@@ -52,6 +52,8 @@ class Cockroach(Agent):
         #define wandering state, not sure if it is correct
         for site in self.aggregation.objects.sites:
             collide = pygame.sprite.collide_mask(self, site)
+            if bool(coolide):
+                self.site_behavior()
             #if not in the site or not in the leave state then wander
             # if not bool(collide) and leave == True:
             #     pass
@@ -72,8 +74,8 @@ class Cockroach(Agent):
     # Joining (decided to join an aggregation)
 
     def join(self): 
-        n_neighbours = get_n_neighbours()
-        #the probaility of joining is queal to the amount of neighbours divided by the total population
+        n_neighbours = self.get_n_neighbours()
+        #the probaility of joining is equeal to the amount of neighbours divided by the total population
         prob = n_neighbours/config['base']['n_agents']
         sample = random.uniform(0,1)
         if sample < prob:
@@ -85,8 +87,9 @@ class Cockroach(Agent):
     # Still (stop in the aggregate location)
 
     def still(self):
-        n_neighbours = get_n_neighbours()
-        prob = n_neighbours/config['base']['n_agents']
+        n_neighbours = self.get_n_neighbours()
+        #the probaility of joining is equeal to the amount of neighbours divided by the total population
+        prob = 1 - n_neighbours/config['base']['n_agents']
         sample = random.uniform(0,1)
         if sample < prob:
             pass
