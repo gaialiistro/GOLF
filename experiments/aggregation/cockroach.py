@@ -37,6 +37,7 @@ class Cockroach(Agent):
     def change_state(self):
         pass
     def site_behavior(self):
+
         pass
 
     def update_actions(self) -> None:
@@ -47,12 +48,10 @@ class Cockroach(Agent):
             if bool(collide):
                 self.avoid_obstacle()
 
-
-        #change between states
-        #define wandering state, not sure if it is correct
+        # react to the sites in the environment
         for site in self.aggregation.objects.sites:
             collide = pygame.sprite.collide_mask(self, site)
-            if bool(coolide):
+            if bool(collide):
                 self.site_behavior()
             #if not in the site or not in the leave state then wander
             # if not bool(collide) and leave == True:
@@ -94,7 +93,7 @@ class Cockroach(Agent):
         if sample < prob:
             pass
             # still = False
-    # Leaving (where the agent decided to start Wandering
+    # Leaving (where the agent decided to start Wandering)
 
     def leave(self):
         #start walking
