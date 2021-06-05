@@ -70,11 +70,36 @@ class Cockroach(Agent):
         #         self.wander(wander_dist, wander_radius, wander_angle)
         #         print('wander')
 
+
+
+        # ----- Site locations -----
+        #Site 1 location and scale
+        site1_loc = config["aggregation"]["location"]
+        site1_scale = config["aggregation"]["scale"]
+
+        #Site 2 location and scale
+        site2_loc = config["aggregation"]["location2"]
+        site2_scale = config["aggregation"]["scale2"]
+        
+        #Site 1 coordinates
+        site1_min_x, site1_max_x = area(site1_loc[0], site1_scale[0])
+        site1_min_y, site1_max_y = area(site1_loc[1], site1_scale[1])
+
+        #Site 2 coordinates
+        site2_min_x, site2_max_x = area(site2_loc[0], site2_scale[0])
+        site2_min_y, site2_max_y = area(site2_loc[1], site2_scale[1])
+
+
+        # Detect if cockroach is in site 2
+        if self.pos[0] > site2_min_x and self.pos[0] < site2_max_x:
+            if self.pos[1] > site2_min_y and self.pos[1] < site2_max_y:
+                print('Cockroach detected in site 2')
+
     # Joining (decided to join an aggregation)
 
     def join(self): 
         n_neighbours = self.get_n_neighbours()
-        #the probaility of joining is equal to the amount of neighbours divided by the total population
+        #the probability of joining is equal to the amount of neighbours divided by the total population
         prob = n_neighbours/config['base']['n_agents']
         join_density = 0.1 #threshold for transitioning to Join state
 
@@ -82,9 +107,8 @@ class Cockroach(Agent):
         #   if prob > join_density:
         #       min_x, max_x = site_location_min_x, site_location_max_x
         #       min_y, max_y = site_location_min_y, site_location_max_y
-        
-        if prob > join_density:
-            return True
+
+        print('my position:', self.pos)
         pass
             #wait T join
             # still = True
