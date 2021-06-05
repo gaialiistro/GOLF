@@ -1,2 +1,35 @@
 [base]
 swarm_type       = 'aggregation'
+n_agents = 1
+object_location  = [500, 500]
+
+[screen]
+frames = inf
+height = 1000
+width  = 1000
+# general setting
+
+[aggregation]
+outside = true
+site = true
+location   = [300,500]
+scale = [100,100]
+
+site2 = true
+location2   = [700,500]
+scale2 = [100,100]
+# aggregation
+
+[cockroach]
+#view of neighbor agents
+radius_view       = 70
+
+# cockroach setting
+
+[agent]
+height    = 8
+width     = 10
+dt        = 0.2
+mass      = 20
+max_speed = 7.0
+min_speed = 4.0
