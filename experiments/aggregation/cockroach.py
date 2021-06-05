@@ -1,3 +1,4 @@
+from numpy.lib.utils import get_include
 from experiments.aggregation.config import config
 from simulation.agent import Agent
 from simulation.utils import *
@@ -33,19 +34,12 @@ class Cockroach(Agent):
 
         self.aggregation = aggregation
         # self.still = None us it like thsi 
+    def change_state(self):
+        pass
+    def site_behavior(self):
+        pass
 
     def update_actions(self) -> None:
-        # find all the neighbors of a boid based on its radius view
-        neighbors = self.aggregation.find_neighbors(self, config["cockroach"]["radius_view"])
-         #get the amount of neighbors
-        n_neighbors = len(neighbors)
-        #define variables TO DO config.toml
-        wander_dist = 100
-        wander_radius = 100
-        wander_angle = 100
-        leave = True
-        wander = True
-        still = False
 
          # avoid any obstacles in the environment
         for obstacle in self.aggregation.objects.obstacles:
@@ -74,28 +68,38 @@ class Cockroach(Agent):
         #     else:
         #         self.wander(wander_dist, wander_radius, wander_angle)
         #         print('wander')
+
     # Joining (decided to join an aggregation)
 
-    def join(self,n_neighbours): 
-        global still
+    def join(self): 
+        n_neighbours = get_n_neighbours()
         #the probaility of joining is queal to the amount of neighbours divided by the total population
         prob = n_neighbours/config['base']['n_agents']
         sample = random.uniform(0,1)
         if sample < prob:
+            pass
             #wait T join
-            still = True
+            # still = True
             # return True 
+
     # Still (stop in the aggregate location)
 
-    def still(self, n_neighbours):
-        global still
+    def still(self):
+        n_neighbours = get_n_neighbours()
         prob = n_neighbours/config['base']['n_agents']
         sample = random.uniform(0,1)
         if sample < prob:
-            still = False
+            pass
+            # still = False
     # Leaving (where the agent decided to start Wandering
 
     def leave(self):
         #start walking
         #wait T leaves
         return True
+    
+    def get_n_neighbours(self):
+        # find all the neighbors of a boid based on its radius view
+        neighbors = self.aggregation.find_neighbors(self, config["cockroach"]["radius_view"])
+        #get the amount of neighbors
+        return len(neighbors)
