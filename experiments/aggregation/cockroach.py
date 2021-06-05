@@ -53,12 +53,12 @@ class Cockroach(Agent):
         for site in self.aggregation.objects.sites:
             collide = pygame.sprite.collide_mask(self, site)
             #if not in the site or not in the leave state then wander
-            if not bool(collide) and leave == True:
-                pass
-                # self.wander(wander_dist, wander_radius, wander_angle)
-            #if in the site and not in the leave state then join
-            elif bool(collide) and leave == True: 
-                pass
+            # if not bool(collide) and leave == True:
+            #     pass
+            #     # self.wander(wander_dist, wander_radius, wander_angle)
+            # #if in the site and not in the leave state then join
+            # elif bool(collide) and leave == True: 
+            #     passs
                 # join()
             
 
