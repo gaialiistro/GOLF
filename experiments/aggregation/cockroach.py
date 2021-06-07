@@ -37,7 +37,6 @@ class Cockroach(Agent):
     def change_state(self):
         pass
     def site_behavior(self):
-
         pass
 
     def update_actions(self) -> None:
@@ -48,7 +47,9 @@ class Cockroach(Agent):
             if bool(collide):
                 self.avoid_obstacle()
 
-        # react to the sites in the environment
+
+        #change between states
+        #define wandering state, not sure if it is correct
         for site in self.aggregation.objects.sites:
             collide = pygame.sprite.collide_mask(self, site)
             if bool(collide):
@@ -57,12 +58,16 @@ class Cockroach(Agent):
             # if not bool(collide) and leave == True:
             #     pass
             #     # self.wander(wander_dist, wander_radius, wander_angle)
-            # #if in the site and not in the leave state then join
+
+
+            # #if in the site (TODO: and not in the leave state) then join
+                self.join()
+    
+
             # elif bool(collide) and leave == True: 
             #     passs
                 # join()
             
-
         #     if bool(collide):
         #         self.join(n_neighbors)
         #         print("site")
@@ -70,15 +75,47 @@ class Cockroach(Agent):
         #         self.wander(wander_dist, wander_radius, wander_angle)
         #         print('wander')
 
+
+
     # Joining (decided to join an aggregation)
 
     def join(self): 
-        n_neighbours = self.get_n_neighbours()
-        #the probaility of joining is equeal to the amount of neighbours divided by the total population
-        prob = n_neighbours/config['base']['n_agents']
-        sample = random.uniform(0,1)
-        if sample < prob:
-            pass
+
+        # ----- Site locations -----
+        #Site 1 location and scale
+        site1_loc = config["aggregation"]["location"]
+        site1_scale = config["aggregation"]["scale"]
+
+        #Site 2 location and scale
+        site2_loc = config["aggregation"]["location2"]
+        site2_scale = config["aggregation"]["scale2"]
+        
+        #Site 1 coordinates
+        site1_min_x, site1_max_x = area(site1_loc[0], site1_scale[0])
+        site1_min_y, site1_max_y = area(site1_loc[1], site1_scale[1])
+
+        #Site 2 coordinates
+        site2_min_x, site2_max_x = area(site2_loc[0], site2_scale[0])
+        site2_min_y, site2_max_y = area(site2_loc[1], site2_scale[1])
+
+
+        # if cockroach in site 1
+        if self.pos[0] > site1_min_x and self.pos[0] < site1_max_x and self.pos[1] > site1_min_y and self.pos[1] < site1_max_y:
+            n_neighbours = self.get_n_neighbours() #check number of neigbors
+            Pjoin = n_neighbours/config['base']['n_agents'] #check local density
+            join_density = 0.07 #threshold for transitioning to Join state
+            if Pjoin > join_density:
+                self.pos[0], self.pos[1] = 300, 500 #join site 1
+
+        # if cockroach in site 2
+        if self.pos[0] > site2_min_x and self.pos[0] < site2_max_x and self.pos[1] > site2_min_y and self.pos[1] < site2_max_y:
+            n_neighbours = self.get_n_neighbours() #check number of neigbors
+            Pjoin = n_neighbours/config['base']['n_agents'] #check local density
+            join_density = 0.07 #threshold for transitioning to Join state
+            if Pjoin > join_density:
+                self.pos[0], self.pos[1] = 700, 500 #join site 2
+        
+        pass
             #wait T join
             # still = True
             # return True 
@@ -93,7 +130,7 @@ class Cockroach(Agent):
         if sample < prob:
             pass
             # still = False
-    # Leaving (where the agent decided to start Wandering)
+    # Leaving (where the agent decided to start Wandering
 
     def leave(self):
         #start walking
