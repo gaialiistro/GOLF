@@ -58,7 +58,12 @@ class Cockroach(Agent):
             # if not bool(collide) and leave == True:
             #     pass
             #     # self.wander(wander_dist, wander_radius, wander_angle)
-            # #if in the site and not in the leave state then join
+
+
+            # #if in the site (TODO: and not in the leave state) then join
+                self.join()
+    
+
             # elif bool(collide) and leave == True: 
             #     passs
                 # join()
@@ -71,6 +76,10 @@ class Cockroach(Agent):
         #         print('wander')
 
 
+
+    # Joining (decided to join an aggregation)
+
+    def join(self): 
 
         # ----- Site locations -----
         #Site 1 location and scale
@@ -90,25 +99,22 @@ class Cockroach(Agent):
         site2_min_y, site2_max_y = area(site2_loc[1], site2_scale[1])
 
 
-        # Detect if cockroach is in site 2
-        if self.pos[0] > site2_min_x and self.pos[0] < site2_max_x:
-            if self.pos[1] > site2_min_y and self.pos[1] < site2_max_y:
-                print('Cockroach detected in site 2')
+        # if cockroach in site 1
+        if self.pos[0] > site1_min_x and self.pos[0] < site1_max_x and self.pos[1] > site1_min_y and self.pos[1] < site1_max_y:
+            n_neighbours = self.get_n_neighbours() #check number of neigbors
+            Pjoin = n_neighbours/config['base']['n_agents'] #check local density
+            join_density = 0.07 #threshold for transitioning to Join state
+            if Pjoin > join_density:
+                self.pos[0], self.pos[1] = 300, 500 #join site 1
 
-    # Joining (decided to join an aggregation)
-
-    def join(self): 
-        n_neighbours = self.get_n_neighbours()
-        #the probability of joining is equal to the amount of neighbours divided by the total population
-        prob = n_neighbours/config['base']['n_agents']
-        join_density = 0.1 #threshold for transitioning to Join state
-
-        # if cockroach in site:
-        #   if prob > join_density:
-        #       min_x, max_x = site_location_min_x, site_location_max_x
-        #       min_y, max_y = site_location_min_y, site_location_max_y
-
-        print('my position:', self.pos)
+        # if cockroach in site 2
+        if self.pos[0] > site2_min_x and self.pos[0] < site2_max_x and self.pos[1] > site2_min_y and self.pos[1] < site2_max_y:
+            n_neighbours = self.get_n_neighbours() #check number of neigbors
+            Pjoin = n_neighbours/config['base']['n_agents'] #check local density
+            join_density = 0.07 #threshold for transitioning to Join state
+            if Pjoin > join_density:
+                self.pos[0], self.pos[1] = 700, 500 #join site 2
+        
         pass
             #wait T join
             # still = True
