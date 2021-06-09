@@ -4,7 +4,6 @@ from simulation.agent import Agent
 from simulation.utils import *
 import random
 
-
 class Cockroach(Agent):
     """ """
     def __init__(
@@ -99,21 +98,43 @@ class Cockroach(Agent):
         site2_min_y, site2_max_y = area(site2_loc[1], site2_scale[1])
 
 
-        # if cockroach in site 1
-        if self.pos[0] > site1_min_x and self.pos[0] < site1_max_x and self.pos[1] > site1_min_y and self.pos[1] < site1_max_y:
+        # join if cockroach in site 1 and density is high enough
+        if self.pos[0] > site1_min_x + 10 and self.pos[0] < site1_max_x - 10 and self.pos[1] > site1_min_y + 10 and self.pos[1] < site1_max_y - 10:
             n_neighbours = self.get_n_neighbours() #check number of neigbors
             Pjoin = n_neighbours/config['base']['n_agents'] #check local density
-            join_density = 0.07 #threshold for transitioning to Join state
+            join_density = 0.12 #threshold for transitioning to Join state
             if Pjoin > join_density:
-                self.pos[0], self.pos[1] = 300, 500 #join site 1
+                print('Pjoin:', Pjoin)
+                self.max_speed = 0
 
-        # if cockroach in site 2
-        if self.pos[0] > site2_min_x and self.pos[0] < site2_max_x and self.pos[1] > site2_min_y and self.pos[1] < site2_max_y:
+        # join if cockroach in site 2 and density is high enough
+        if self.pos[0] > site2_min_x + 10 and self.pos[0] < site2_max_x - 10 and self.pos[1] > site2_min_y + 10 and self.pos[1] < site2_max_y - 10:
             n_neighbours = self.get_n_neighbours() #check number of neigbors
             Pjoin = n_neighbours/config['base']['n_agents'] #check local density
-            join_density = 0.07 #threshold for transitioning to Join state
+            join_density = 0.12 #threshold for transitioning to Join state
             if Pjoin > join_density:
-                self.pos[0], self.pos[1] = 700, 500 #join site 2
+                print('Pjoin:', Pjoin)
+                self.max_speed = 0        
+
+        # leave if cockroach in site 1 and density is low enough
+        if self.pos[0] > site1_min_x + 10 and self.pos[0] < site1_max_x - 10 and self.pos[1] > site1_min_y + 10 and self.pos[1] < site1_max_y - 10:
+            n_neighbours = self.get_n_neighbours() #check number of neigbors
+            Pleave = n_neighbours/config['base']['n_agents'] #check local density
+            leave_density = 0.08
+            if Pleave < leave_density:
+                print('Pleave:', Pleave)
+                self.max_speed = 30.0
+
+        # leave if cockroach in site 2 and density is low enough
+        if self.pos[0] > site2_min_x + 10 and self.pos[0] < site2_max_x - 10 and self.pos[1] > site2_min_y + 10 and self.pos[1] < site2_max_y - 10:
+            n_neighbours = self.get_n_neighbours() #check number of neigbors
+            Pleave = n_neighbours/config['base']['n_agents'] #check local density
+            leave_density = 0.08
+            if Pleave < leave_density:
+                print('Pleave:', Pleave)
+                self.max_speed = 30.0
+                
+
         
         pass
             #wait T join
