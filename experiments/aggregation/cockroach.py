@@ -3,6 +3,8 @@ from experiments.aggregation.config import config
 from simulation.agent import Agent
 from simulation.utils import *
 import random
+import time
+
 
 class Cockroach(Agent):
     """ """
@@ -29,58 +31,20 @@ class Cockroach(Agent):
             height=config["agent"]["height"],
             dT=config["agent"]["dt"],
             index=index
-        )
-
-        self.aggregation = aggregation
-        # self.still = None us it like thsi 
-    def change_state(self):
-        pass
-    def site_behavior(self):
-        pass
-
-    def update_actions(self) -> None:
-
-         # avoid any obstacles in the environment
-        for obstacle in self.aggregation.objects.obstacles:
-            collide = pygame.sprite.collide_mask(self, obstacle)
-            if bool(collide):
-                self.avoid_obstacle()
-
-
-        #change between states
-        #define wandering state, not sure if it is correct
-        for site in self.aggregation.objects.sites:
-            collide = pygame.sprite.collide_mask(self, site)
-            if bool(collide):
-                self.site_behavior()
-            #if not in the site or not in the leave state then wander
-            # if not bool(collide) and leave == True:
-            #     pass
-            #     # self.wander(wander_dist, wander_radius, wander_angle)
-
-
-            # #if in the site (TODO: and not in the leave state) then join
-                self.join()
-    
-
-            # elif bool(collide) and leave == True: 
-            #     passs
-                # join()
             
-        #     if bool(collide):
-        #         self.join(n_neighbors)
-        #         print("site")
-        #     else:
-        #         self.wander(wander_dist, wander_radius, wander_angle)
-        #         print('wander')
+        )
+        self.state = 'wander'
+        self.aggregation = aggregation
+        self.start_time = pygame.time.get_ticks()
+        self.wait = 3
+        self.list_fun = []
+        self.counter = 0 
+        self.speed = np.array([12.12914438 ,-14.01726499])
 
 
-
-    # Joining (decided to join an aggregation)
-
-    def join(self): 
-
-        # ----- Site locations -----
+    def out_of_site(self):
+        # print('c')
+                # ----- Site locations -----
         #Site 1 location and scale
         site1_loc = config["aggregation"]["location"]
         site1_scale = config["aggregation"]["scale"]
@@ -96,67 +60,56 @@ class Cockroach(Agent):
         #Site 2 coordinates
         site2_min_x, site2_max_x = area(site2_loc[0], site2_scale[0])
         site2_min_y, site2_max_y = area(site2_loc[1], site2_scale[1])
-
-
-        # join if cockroach in site 1 and density is high enough
-        if self.pos[0] > site1_min_x + 10 and self.pos[0] < site1_max_x - 10 and self.pos[1] > site1_min_y + 10 and self.pos[1] < site1_max_y - 10:
-            n_neighbours = self.get_n_neighbours() #check number of neigbors
-            Pjoin = n_neighbours/config['base']['n_agents'] #check local density
-            join_density = 0.12 #threshold for transitioning to Join state
-            if Pjoin > join_density:
-                print('Pjoin:', Pjoin)
-                self.max_speed = 0
-
-        # join if cockroach in site 2 and density is high enough
-        if self.pos[0] > site2_min_x + 10 and self.pos[0] < site2_max_x - 10 and self.pos[1] > site2_min_y + 10 and self.pos[1] < site2_max_y - 10:
-            n_neighbours = self.get_n_neighbours() #check number of neigbors
-            Pjoin = n_neighbours/config['base']['n_agents'] #check local density
-            join_density = 0.12 #threshold for transitioning to Join state
-            if Pjoin > join_density:
-                print('Pjoin:', Pjoin)
-                self.max_speed = 0        
-
-        # leave if cockroach in site 1 and density is low enough
-        if self.pos[0] > site1_min_x + 10 and self.pos[0] < site1_max_x - 10 and self.pos[1] > site1_min_y + 10 and self.pos[1] < site1_max_y - 10:
-            n_neighbours = self.get_n_neighbours() #check number of neigbors
-            Pleave = n_neighbours/config['base']['n_agents'] #check local density
-            leave_density = 0.08
-            if Pleave < leave_density:
-                print('Pleave:', Pleave)
-                self.max_speed = 30.0
-
-        # leave if cockroach in site 2 and density is low enough
-        if self.pos[0] > site2_min_x + 10 and self.pos[0] < site2_max_x - 10 and self.pos[1] > site2_min_y + 10 and self.pos[1] < site2_max_y - 10:
-            n_neighbours = self.get_n_neighbours() #check number of neigbors
-            Pleave = n_neighbours/config['base']['n_agents'] #check local density
-            leave_density = 0.08
-            if Pleave < leave_density:
-                print('Pleave:', Pleave)
-                self.max_speed = 30.0
-                
-
         
-        pass
-            #wait T join
-            # still = True
-            # return True 
+        if not ((self.pos[0] > site1_min_x + 10 and self.pos[0] < site1_max_x - 10 and self.pos[1] > site1_min_y + 10 and self.pos[1] < site1_max_y - 10) or ( self.pos[0] > site2_min_x + 10 and self.pos[0] < site2_max_x - 10 and self.pos[1] > site2_min_y + 10 and self.pos[1] < site2_max_y - 10)):
+            self.start_time = pygame.time.get_ticks()
+        return self.start_time
 
-    # Still (stop in the aggregate location)
+    def site_behavior(self):
+        if self.state == 'wander':
+            # self.counter = 0
+            n_neighbours = self.get_n_neighbours() #check number of neigbors
+            Pjoin = n_neighbours*0.05 #check local density
+            join_density = random.uniform(0,1) 
+            if Pjoin > join_density and pygame.time.get_ticks()-self.start_time > 200:
+                self.max_speed = 0.0
+                self.state = 'join'
 
-    def still(self):
-        n_neighbours = self.get_n_neighbours()
-        #the probaility of joining is equeal to the amount of neighbours divided by the total population
-        prob = 1 - n_neighbours/config['base']['n_agents']
-        sample = random.uniform(0,1)
-        if sample < prob:
-            pass
-            # still = False
-    # Leaving (where the agent decided to start Wandering
+        if self.state == 'join':
+            n_neighbours = self.get_n_neighbours() #check number of neigbors
+            Pleave = 1-n_neighbours*0.01  #check local density
+            leave_density = random.uniform(0,1)
+            if self.counter%5000 == 0:
+                if Pleave > leave_density:
+                    self.state = 'leave'
+                    self.max_speed = 30.0
+                    self.counter = 0
+                    self.v = self.speed
 
-    def leave(self):
-        #start walking
-        #wait T leaves
-        return True
+                   
+        if self.state == 'leave':
+            if self.counter == 1000:
+                self.state = 'wander'
+
+
+    def update_actions(self) -> None:
+        self.counter +=1 
+
+         # avoid any obstacles in the environment
+        for obstacle in self.aggregation.objects.obstacles:
+            collide = pygame.sprite.collide_mask(self, obstacle)
+            if bool(collide):
+                self.avoid_obstacle()
+      
+        
+        # react to sites in the environment
+        for site in self.aggregation.objects.sites:
+            collide = pygame.sprite.collide_mask(self, site)
+            if bool(collide):
+                self.site_behavior()
+            else:
+                self.out_of_site()
+                
     
     def get_n_neighbours(self):
         # find all the neighbors of a boid based on its radius view

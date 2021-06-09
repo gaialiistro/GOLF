@@ -1,6 +1,6 @@
 [base]
 swarm_type       = 'aggregation'
-n_agents = 45
+n_agents = 40
 object_location  = [500, 500]
 
 [screen]
@@ -17,7 +17,7 @@ scale = [100,100]
 
 site2 = true
 location2   = [700,500]
-scale2 = [100,100]
+scale2 = [150,150]
 # aggregation
 
 [cockroach]
