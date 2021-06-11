@@ -38,7 +38,7 @@ class Population(Swarm):
                 except IndexError:
                     pass
         
-        for index, agent in enumerate(range(num_agents)):
+        for index, agent in enumerate(range(2)):#num_agents
             coordinates = generate_coordinates(self.screen)
             # if config['population']['outside']:
             #     while (
@@ -50,5 +50,7 @@ class Population(Swarm):
             #             coordinates = generate_coordinates(self.screen)
 
 
-            self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, color=(1,0.5,0)))
+            self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, color =  (255, 181, 61),type = "S"))
 
+        for index, agent in enumerate(range(2)):
+            self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, color =  (255, 61, 61),type = "I"))

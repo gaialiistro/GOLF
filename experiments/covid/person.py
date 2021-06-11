@@ -9,7 +9,7 @@ from simulation.utils import *
 class Person(Agent):
   
     def __init__(
-            self, pos, v, population, index: int, image: str = None, color = None
+            self, pos, v, population, index: int, image: str = None, color = None, type = None
     ) -> None:
         """
         Args:
@@ -32,17 +32,36 @@ class Person(Agent):
             height=config["agent"]["height"],
             dT=config["agent"]["dt"],
             index=index,
+            
            
         )
         self.population = population
         self.recovered = (145, 255, 61)
         self.infectious = (255, 61, 61)
         self.susceptible = (255, 181, 61)
+        self.type = type
+       
     
+
+    def infected(self):
+        if self.population.find_neighbors(self,config["person"]["radius_view"]) and self.type == "S":
+            self.type = "I"
+         
+
     def update_actions(self) -> None:
-     
-         # avoid any obstacles in the environment
+        self.infected()
+        self.get_colors()
+        print(self.color)
+        # avoid any obstacles in the environment
         for obstacle in self.population.objects.obstacles:
             collide = pygame.sprite.collide_mask(self, obstacle)
             if bool(collide):
                 self.avoid_obstacle()
+    
+    def get_colors(self):
+        if self.type == "S":
+            self.color = self.susceptible
+        elif self.type == "I":
+            self.color = (255, 61, 61)
+        else:
+            self.color = self.recovered
