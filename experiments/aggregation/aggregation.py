@@ -38,7 +38,7 @@ class Aggregations(Swarm):
     #add outside borders
         if config['aggregation']['outside']:
             scale = [800, 800]
-            filename = ("experiments/flocking/images/convex.png")
+            filename = ("experiments/aggregation/images/greyc1.png")
 #("experiments/aggregation/images/greyc2.png")
             object_loc = config["base"]["object_location"]
             self.objects.add_object(

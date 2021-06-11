@@ -9,6 +9,7 @@ class Population(Swarm):
 
     def __init__(self, screen_size) -> None:
         super(Population, self).__init__(screen_size)
+        
         # To do
 
     def initialize(self, num_agents: int) -> None:
@@ -36,3 +37,18 @@ class Population(Swarm):
                         )
                 except IndexError:
                     pass
+        
+        for index, agent in enumerate(range(num_agents)):
+            coordinates = generate_coordinates(self.screen)
+            # if config['population']['outside']:
+            #     while (
+            #             coordinates[0] >= max_x
+            #             or coordinates[0] <= min_x
+            #             or coordinates[1] >= max_y
+            #             or coordinates[1] <= min_y
+            #         ):
+            #             coordinates = generate_coordinates(self.screen)
+
+
+            self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, color=(1,0.5,0)))
+
