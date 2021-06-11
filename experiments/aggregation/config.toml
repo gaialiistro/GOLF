@@ -12,17 +12,17 @@ width  = 1000
 [aggregation]
 outside = true
 site = true
-location   = [300,500]
-scale = [100,100]
+location   = [600,300]
+scale = [125,125]
 
 site2 = true
-location2   = [700,500]
-scale2 = [150,150]
+location2   = [750,520]
+scale2 = [100,100]
 # aggregation
 
 [cockroach]
 #view of neighbor agents
-radius_view       = 70
+radius_view       = 30
 
 # cockroach setting
 

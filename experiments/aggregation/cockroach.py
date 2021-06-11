@@ -72,14 +72,14 @@ class Cockroach(Agent):
             Pjoin = n_neighbours*0.05 #check local density
             join_density = random.uniform(0,1) 
             if Pjoin > join_density and pygame.time.get_ticks()-self.start_time > 200:
-                self.max_speed = 0.0
+                self.v =  np.array([0,0])
                 self.state = 'join'
 
         if self.state == 'join':
             n_neighbours = self.get_n_neighbours() #check number of neigbors
-            Pleave = 1-n_neighbours*0.01  #check local density
+            Pleave = 1-n_neighbours*0.05  #check local density
             leave_density = random.uniform(0,1)
-            if self.counter%5000 == 0:
+            if self.counter%2000 == 0:
                 if Pleave > leave_density:
                     self.state = 'leave'
                     self.max_speed = 30.0
@@ -88,7 +88,7 @@ class Cockroach(Agent):
 
                    
         if self.state == 'leave':
-            if self.counter == 1000:
+            if self.counter%1000==0:
                 self.state = 'wander'
 
 
