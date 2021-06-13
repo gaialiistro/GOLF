@@ -13,7 +13,7 @@ width  = 1000
 obstacles = false
 
 [person]
-radius_view = 30
+radius_view = 10
 
 [agent]
 height    = 6
