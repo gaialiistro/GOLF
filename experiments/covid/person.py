@@ -53,6 +53,8 @@ class Person(Agent):
         self.infected()
         self.get_colors()
         self.recover()
+        self.store_agent_types()
+
         # avoid any obstacles in the environment
         for obstacle in self.population.objects.obstacles:
             collide = pygame.sprite.collide_mask(self, obstacle)
@@ -70,5 +72,10 @@ class Person(Agent):
     def recover(self):
         if self.type == "I":
             self.timer +=1
-            if self.timer % 1000 == 0:
+            if self.timer % 5000 == 0:
                 self.type = "R"
+
+    def store_agent_types(self):
+        for agent in self.population.agents:
+            if agent.type != None and agent.type != "":
+                self.population.datapoints.append(agent.type)
