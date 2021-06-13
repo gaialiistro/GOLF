@@ -40,6 +40,8 @@ class Person(Agent):
         self.infectious = (255, 61, 61)
         self.susceptible = (255, 181, 61)
         self.type = type
+        self.timer = 0
+        self.recovery_time = 5000
         
 
     def infected(self):
@@ -50,6 +52,7 @@ class Person(Agent):
     def update_actions(self) -> None:
         self.infected()
         self.get_colors()
+        self.recover()
         # avoid any obstacles in the environment
         for obstacle in self.population.objects.obstacles:
             collide = pygame.sprite.collide_mask(self, obstacle)
@@ -63,3 +66,9 @@ class Person(Agent):
             self.image.fill(self.infectious)
         else:
             self.image.fill(self.recovered)
+    
+    def recover(self):
+        if self.type == "I":
+            self.timer +=1
+        if self.timer % self.recovery_time == 0:
+            self.type = "R"
