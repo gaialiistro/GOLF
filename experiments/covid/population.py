@@ -52,5 +52,5 @@ class Population(Swarm):
 
             self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "S"))
 
-        for index, agent in enumerate(range(2)):
+        for index, agent in enumerate(range(int(num_agents/10))):
             self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "I"))

@@ -64,11 +64,11 @@ class Person(Agent):
             self.image.fill(self.susceptible)
         elif self.type == "I":
             self.image.fill(self.infectious)
-        else:
+        elif self.type == "R":
             self.image.fill(self.recovered)
     
     def recover(self):
         if self.type == "I":
             self.timer +=1
-        if self.timer % self.recovery_time == 0:
-            self.type = "R"
+            if self.timer % 1000 == 0:
+                self.type = "R"
