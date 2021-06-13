@@ -40,8 +40,6 @@ class Person(Agent):
         self.infectious = (255, 61, 61)
         self.susceptible = (255, 181, 61)
         self.type = type
-        self.width=int(config["agent"]["width"]),
-        self.height=int(config["agent"]["height"]),
         
 
     def infected(self):
@@ -60,11 +58,8 @@ class Person(Agent):
     
     def get_colors(self):
         if self.type == "S":
-            self.image = pygame.Surface((6, 6), pygame.SRCALPHA)
             self.image.fill(self.susceptible)
         elif self.type == "I":
-            self.image = pygame.Surface((6, 6), pygame.SRCALPHA)
             self.image.fill(self.infectious)
         else:
-            self.image = pygame.Surface((6, 6), pygame.SRCALPHA)
             self.image.fill(self.recovered)
