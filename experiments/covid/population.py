@@ -2,6 +2,7 @@ from experiments.covid.config import config
 from experiments.covid.person import Person
 from simulation.swarm import Swarm
 from simulation.utils import *
+import random
 
 
 class Population(Swarm):
@@ -37,7 +38,19 @@ class Population(Swarm):
                         )
                 except IndexError:
                     pass
-        
+
+        #add lockdown
+        if config['population']['lockdown']:
+            object_loc=config['population']['lockdown_location']
+            scale = config['population']['lockdown_scale']
+            filename = ("experiments/covid/images/LockdownSquare.png")
+            self.objects.add_object(
+                file=filename, pos=object_loc, scale=config['population']['lockdown_scale'], obj_type="site")
+            min_x, max_x = area(object_loc[0], scale[0])
+            min_y, max_y = area(object_loc[1], scale[1])
+
+
+        #add agents
         for index, agent in enumerate(range(num_agents)):#num_agents
             coordinates = generate_coordinates(self.screen)
             # if config['population']['outside']:
@@ -54,3 +67,13 @@ class Population(Swarm):
 
         for index, agent in enumerate(range(int(num_agents/10))):
             self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "I"))
+
+
+        #TODO: add susceptible agents in lockdown and make lockdown site inaccessible to others
+       # for index, agent in enumerate(range(5)): #number of agents in lockdown
+       #     self.add_agent(Person(pos=np.array(lockdown_coordinates), v=None, population=self, index=index, type = "S"))
+
+
+
+
+

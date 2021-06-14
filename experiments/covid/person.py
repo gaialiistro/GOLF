@@ -53,7 +53,7 @@ class Person(Agent):
         self.infected()
         self.get_colors()
         self.recover()
-        self.store_agent_types()
+        #self.store_agent_types()
 
         # avoid any obstacles in the environment
         for obstacle in self.population.objects.obstacles:
@@ -75,7 +75,7 @@ class Person(Agent):
             if self.timer % 5000 == 0:
                 self.type = "R"
 
-    def store_agent_types(self):
-        for agent in self.population.agents:
-            if agent.type != None and agent.type != "":
-                self.population.datapoints.append(agent.type)
+    #def store_agent_types(self):
+    #    for agent in self.population.agents:
+    #        if agent.type != None and agent.type != "":
+    #            self.population.datapoints.append(agent.type)
