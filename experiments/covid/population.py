@@ -46,32 +46,59 @@ class Population(Swarm):
             filename = ("experiments/covid/images/LockdownSquare.png")
             self.objects.add_object(
                 file=filename, pos=object_loc, scale=config['population']['lockdown_scale'], obj_type="site")
+            self.objects.add_object(
+                file=filename, pos=object_loc, scale=scale, obj_type="obstacle"
+            )
             min_x, max_x = area(object_loc[0], scale[0])
             min_y, max_y = area(object_loc[1], scale[1])
 
 
-        #add agents
-        for index, agent in enumerate(range(num_agents)):#num_agents
-            coordinates = generate_coordinates(self.screen)
-            # if config['population']['outside']:
-            #     while (
-            #             coordinates[0] >= max_x
-            #             or coordinates[0] <= min_x
-            #             or coordinates[1] >= max_y
-            #             or coordinates[1] <= min_y
-            #         ):
-            #             coordinates = generate_coordinates(self.screen)
+        #lockdown program
+        if config['population']['lockdown']:
+            for index, agent in enumerate(range(5)): #number of agents in lockdown
+                coordinates = generate_coordinates(self.screen)
+                while (
+                        coordinates[0] >= max_x
+                        or coordinates[0] <= min_x 
+                        or coordinates[1] >= max_y
+                        or coordinates[1] <= min_y
+                    ):
+                        coordinates = generate_coordinates(self.screen)
+                self.add_agent(Person(pos=object_loc, v=None, population=self, index=index, type = "S"))
+
+            for index, agent in enumerate(range(num_agents)):#num_agents
+                coordinates = generate_coordinates(self.screen)
+                while (
+                        coordinates[0] <= max_x
+                        and coordinates[0] >= min_x
+                        and coordinates[1] <= max_y
+                        and coordinates[1] >= min_y
+                    ):
+                        coordinates = generate_coordinates(self.screen)
+                self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "S"))
+
+            for index, agent in enumerate(range(int(num_agents/10))):
+                coordinates = generate_coordinates(self.screen)
+                while (
+                        coordinates[0] <= max_x
+                        and coordinates[0] >= min_x
+                        and coordinates[1] <= max_y
+                        and coordinates[1] >= min_y
+                    ):
+                        coordinates = generate_coordinates(self.screen)
+                self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "I"))
 
 
-            self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "S"))
+        #non-lockdown program
+        if not config['population']['lockdown']:
+            for index, agent in enumerate(range(num_agents)):#num_agents
+                coordinates = generate_coordinates(self.screen)
+                self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "S"))
 
-        for index, agent in enumerate(range(int(num_agents/10))):
-            self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "I"))
+            for index, agent in enumerate(range(int(num_agents/10))):
+                coordinates = generate_coordinates(self.screen)
+                self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "I"))
 
-
-        #TODO: add susceptible agents in lockdown and make lockdown site inaccessible to others
-       # for index, agent in enumerate(range(5)): #number of agents in lockdown
-       #     self.add_agent(Person(pos=np.array(lockdown_coordinates), v=None, population=self, index=index, type = "S"))
 
 
 
