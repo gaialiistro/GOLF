@@ -99,13 +99,13 @@ class Population(Swarm):
                 file=filename1, pos=object_loc, scale=scale, obj_type="site")
             self.objects.add_object(
                 file=filename2, pos=object_loc, scale=[1000,1000], obj_type="obstacle")
-        for index, agent in enumerate(range(num_agents)):#num_agents
-            coordinates = generate_coordinates(self.screen)
-            self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "S"))
+            for index, agent in enumerate(range(num_agents)):#num_agents
+                coordinates = generate_coordinates(self.screen)
+                self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "S"))
 
-        for index, agent in enumerate(range(int(num_agents/10))):
-            coordinates = generate_coordinates(self.screen)
-            self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "I"))
+            for index, agent in enumerate(range(int(num_agents/10))):
+                coordinates = generate_coordinates(self.screen)
+                self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "I"))
 
 
 
@@ -115,7 +115,7 @@ class Population(Swarm):
         
           #school configuration
         if config['population']['school']:
-            object_loc=[500,500]
+            object_loc=[500,600]
             scale=[1000,1000]
             filename1 = ("experiments/covid/images/room.png")
             filename2 = ("experiments/covid/images/structure.png")
@@ -136,7 +136,7 @@ class Population(Swarm):
                         or coordinates[1] <= min_y
                     ):
                         coordinates = generate_coordinates(self.screen)
-                self.add_agent(Person(pos=object_loc, v=None, population=self, index=index, type = "S"))
+                self.add_agent(Person(pos=[500,500], v=None, population=self, index=index, type = "S"))
             for index, agent in enumerate(range(int(num_agents/10))):
                 coordinates = generate_coordinates(self.screen)
                 while (
@@ -146,7 +146,7 @@ class Population(Swarm):
                         or coordinates[1] <= min_y
                     ):
                         coordinates = generate_coordinates(self.screen)
-                self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "I"))
+                self.add_agent(Person(pos=[500,500], v=None, population=self, index=index, type = "I"))
         
             
             
