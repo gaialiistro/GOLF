@@ -45,7 +45,7 @@ class Population(Swarm):
             scale = config['population']['lockdown_scale']
             filename = ("experiments/covid/images/LockdownSquare.png")
             self.objects.add_object(
-                file=filename, pos=object_loc, scale=config['population']['lockdown_scale'], obj_type="site")
+                file=filename, pos=object_loc, scale=config['population']['lockdown_scale'], obj_type="obstacle")
             self.objects.add_object(
                 file=filename, pos=object_loc, scale=scale, obj_type="obstacle"
             )
@@ -89,8 +89,73 @@ class Population(Swarm):
                 self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "I"))
 
 
+        #movie theatre configuration
+        if config['population']['cinema']:
+            object_loc=[500,500]
+            scale=[1500,1500]
+            filename1 = ("experiments/covid/images/seats.png")
+            filename2 = ("experiments/covid/images/cinema.png")
+            self.objects.add_object(
+                file=filename1, pos=object_loc, scale=scale, obj_type="site")
+            self.objects.add_object(
+                file=filename2, pos=object_loc, scale=[1000,1000], obj_type="obstacle")
+        for index, agent in enumerate(range(num_agents)):#num_agents
+            coordinates = generate_coordinates(self.screen)
+            self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "S"))
+
+        for index, agent in enumerate(range(int(num_agents/10))):
+            coordinates = generate_coordinates(self.screen)
+            self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "I"))
+
+
+
+
+
+                
+        
+          #school configuration
+        if config['population']['school']:
+            object_loc=[500,500]
+            scale=[1000,1000]
+            filename1 = ("experiments/covid/images/room.png")
+            filename2 = ("experiments/covid/images/structure.png")
+            self.objects.add_object(
+                file=filename2, pos=object_loc, scale=scale, obj_type="obstacle")
+            self.objects.add_object(
+                file=filename1, pos=object_loc, scale=scale, obj_type="site")
+            min_x, max_x = area(object_loc[0], scale[0])
+            min_y, max_y = area(object_loc[1], scale[1])
+
+
+            for index, agent in enumerate(range(int(num_agents))): #agents in school
+                coordinates = generate_coordinates(self.screen)
+                while (
+                        coordinates[0] >= max_x
+                        or coordinates[0] <= min_x 
+                        or coordinates[1] >= max_y
+                        or coordinates[1] <= min_y
+                    ):
+                        coordinates = generate_coordinates(self.screen)
+                self.add_agent(Person(pos=object_loc, v=None, population=self, index=index, type = "S"))
+            for index, agent in enumerate(range(int(num_agents/10))):
+                coordinates = generate_coordinates(self.screen)
+                while (
+                            coordinates[0] >= max_x
+                        or coordinates[0] <= min_x 
+                        or coordinates[1] >= max_y
+                        or coordinates[1] <= min_y
+                    ):
+                        coordinates = generate_coordinates(self.screen)
+                self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "I"))
+        
+            
+            
+            
+ 
+
+
         #non-lockdown program
-        if not config['population']['lockdown']:
+        if  config['population']['outside']:
             for index, agent in enumerate(range(num_agents)):#num_agents
                 coordinates = generate_coordinates(self.screen)
                 self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "S"))
@@ -98,6 +163,8 @@ class Population(Swarm):
             for index, agent in enumerate(range(int(num_agents/10))):
                 coordinates = generate_coordinates(self.screen)
                 self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "I"))
+
+
 
 
 

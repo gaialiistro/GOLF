@@ -53,13 +53,16 @@ class Person(Agent):
         self.infected()
         self.get_colors()
         self.recover()
-        #self.store_agent_types()
+        self.site_behavior()
+        # self.store_agent_types()
 
         # avoid any obstacles in the environment
         for obstacle in self.population.objects.obstacles:
             collide = pygame.sprite.collide_mask(self, obstacle)
             if bool(collide):
                 self.avoid_obstacle()
+       
+                
     
     def get_colors(self):
         if self.type == "S":
@@ -72,10 +75,25 @@ class Person(Agent):
     def recover(self):
         if self.type == "I":
             self.timer +=1
-            if self.timer % 5000 == 0:
+            if self.timer % 500 == 0:
                 self.type = "R"
+    
+    def site_behavior(self):
+         # react to sites in the environment
+        for site in self.population.objects.sites:
+            collide = pygame.sprite.collide_mask(self, site)
+            if bool(collide):
+                n_neighbours = self.get_n_neighbours() 
+                if n_neighbours == 0:
+                    self.v = np.array([0,0])
+    
+    def get_n_neighbours(self):
+        # find all the neighbors of a boid based on its radius view
+        neighbors = self.population.find_neighbors(self, 60)
+        #get the amount of neighbors
+        return len(neighbors)
 
-    #def store_agent_types(self):
+    # def store_agent_types(self):
     #    for agent in self.population.agents:
     #        if agent.type != None and agent.type != "":
     #            self.population.datapoints.append(agent.type)

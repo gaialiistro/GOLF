@@ -10,19 +10,21 @@ width  = 1000
 # general setting
 
 [population]
-obstacles = true
-outside = false
-lockdown = true #change to false to go back to normal mode
+obstacles = false
+cinema = false
+school = false
+outside = true #normal experiment
+lockdown = false #change to false to go back to normal mode
 lockdown_location = [200,300]
 lockdown_scale = [200,200]
 
 [person]
-radius_view = 10
+radius_view = 20
 
 [agent]
-height    = 6
-width     = 6
+height    = 8
+width     = 8
 dt        = 0.2
 mass      = 20
-max_speed = 5.0
-min_speed = 1.0
+max_speed = 10.0
+min_speed = 5.0
