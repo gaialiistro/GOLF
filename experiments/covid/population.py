@@ -126,32 +126,28 @@ class Population(Swarm):
             min_x, max_x = area(object_loc[0], scale[0])
             min_y, max_y = area(object_loc[1], scale[1])
 
+            for index, agent in enumerate(range(num_agents)):#num_agents
+                coordinates = [400.0, 500.0]
 
-            for index, agent in enumerate(range(int(num_agents))): #agents in school
-                coordinates = generate_coordinates(self.screen)
-                while (
-                        coordinates[0] >= max_x
-                        or coordinates[0] <= min_x 
-                        or coordinates[1] >= max_y
-                        or coordinates[1] <= min_y
-                    ):
-                        coordinates = generate_coordinates(self.screen)
-                self.add_agent(Person(pos=[500,500], v=None, population=self, index=index, type = "S"))
+                self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "S"))
+
             for index, agent in enumerate(range(int(num_agents/10))):
-                coordinates = generate_coordinates(self.screen)
-                while (
-                            coordinates[0] >= max_x
-                        or coordinates[0] <= min_x 
-                        or coordinates[1] >= max_y
-                        or coordinates[1] <= min_y
-                    ):
-                        coordinates = generate_coordinates(self.screen)
-                self.add_agent(Person(pos=[500,500], v=None, population=self, index=index, type = "I"))
-        
+                coordinates = [600.0, 500.0]
+                self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "I"))
+
+
+
+
             
             
-            
- 
+        if config['population']['quarantine']:
+            object_loc=[500,500]
+            scale=[1000,1000]
+            filename = ("experiments/covid/images/quarantine.png")
+            self.objects.add_object(
+                file=filename, pos=object_loc, scale=scale, obj_type="site")
+
+
 
 
         #non-lockdown program

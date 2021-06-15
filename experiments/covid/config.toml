@@ -13,6 +13,7 @@ width  = 1000
 obstacles = false
 cinema = false
 school = false
+quarantine = true #need outside to be true
 outside = true #normal experiment
 lockdown = false #change to false to go back to normal mode
 lockdown_location = [200,300]

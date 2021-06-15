@@ -42,6 +42,7 @@ class Person(Agent):
         self.type = type
         self.timer = 0
         self.recovery_time = 5000
+        self.quarantine_timer = 0
         
 
     def infected(self):
@@ -53,7 +54,8 @@ class Person(Agent):
         self.infected()
         self.get_colors()
         self.recover()
-        self.site_behavior()
+        self.cinema_behavior()
+        self.quarantine()
         # self.store_agent_types()
 
         # avoid any obstacles in the environment
@@ -78,22 +80,41 @@ class Person(Agent):
             if self.timer % 500 == 0:
                 self.type = "R"
     
-    def site_behavior(self):
-         # react to sites in the environment
-        for site in self.population.objects.sites:
-            collide = pygame.sprite.collide_mask(self, site)
-            if bool(collide):
-                n_neighbours = self.get_n_neighbours() 
-                if n_neighbours == 0:
-                    self.v = np.array([0,0])
-    
+    def cinema_behavior(self):
+        if config['population']['cinema']:
+            # react to sites in the environment
+            for site in self.population.objects.sites:
+                collide = pygame.sprite.collide_mask(self, site)
+                if bool(collide):
+                    n_neighbours = self.get_n_neighbours() 
+                    if n_neighbours == 0:
+                        self.v = np.array([0,0])
+        
     def get_n_neighbours(self):
         # find all the neighbors of a boid based on its radius view
-        neighbors = self.population.find_neighbors(self, 60)
+        neighbors = self.population.find_neighbors(self, 20)
         #get the amount of neighbors
         return len(neighbors)
+
+    def quarantine(self):
+        if config['population']['quarantine']:
+            for site in self.population.objects.sites:
+                    collide = pygame.sprite.collide_mask(self, site)
+                    if bool(collide) and self.type == "I":
+                        self.quarantine_timer += 1
+                        if self.quarantine_timer % 20 == 0:
+                            self.v = np.array([0,0])
+                    elif bool(collide) and self.type == "S":
+                            self.avoid_obstacle()
+                    elif bool(collide) and self.type == "R":
+                            self.v = np.array([2.482585,   9.6869382])
+                            self.max_speed = 30.0
+                
+
+                            
 
     # def store_agent_types(self):
     #    for agent in self.population.agents:
     #        if agent.type != None and agent.type != "":
+
     #            self.population.datapoints.append(agent.type)
