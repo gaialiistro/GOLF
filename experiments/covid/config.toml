@@ -12,7 +12,7 @@ width  = 1000
 [population]
 obstacles = false
 cinema = false
-full_lockdown = true
+full_lockdown = false
 school = false
 quarantine = false #need outside to be true
 outside = true #normal experiment

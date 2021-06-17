@@ -74,6 +74,7 @@ class Simulation:
         self.screensize = screen_size
         self.screen = pygame.display.set_mode(screen_size)
         self.sim_background = pygame.Color("gray21")
+        self.background_image = pygame.image.load("experiments/covid/images/background.png")
         self.iter = iterations
         self.swarm_type = swarm_type
 
@@ -117,13 +118,14 @@ class Simulation:
     def simulate(self) -> None:
         """Here each frame is computed and displayed"""
         self.screen.fill(self.sim_background)
+        # self.screen.blit(self.background_image, [0, 0]) #just for university function
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
 
         self.swarm.update()
         self.swarm.display(self.screen)
-
+       
         pygame.display.flip()
 
     def run(self) -> None:

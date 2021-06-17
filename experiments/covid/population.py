@@ -118,23 +118,11 @@ class Population(Swarm):
             object_loc=[500,600]
             scale=[1000,1000]
             filename1 = ("experiments/covid/images/room.png")
-            filename2 = ("experiments/covid/images/structure.png")
+            filename2 = ("experiments/covid/images/river.png")
             self.objects.add_object(
                 file=filename2, pos=object_loc, scale=scale, obj_type="obstacle")
             self.objects.add_object(
                 file=filename1, pos=object_loc, scale=scale, obj_type="site")
-            min_x, max_x = area(object_loc[0], scale[0])
-            min_y, max_y = area(object_loc[1], scale[1])
-
-            for index, agent in enumerate(range(num_agents)):#num_agents
-                coordinates = [400.0, 500.0]
-
-                self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "S"))
-
-            for index, agent in enumerate(range(int(num_agents/10))):
-                coordinates = [600.0, 500.0]
-                self.add_agent(Person(pos=np.array(coordinates), v=None, population=self, index=index, type = "I"))
-
 
 
 

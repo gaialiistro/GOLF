@@ -43,6 +43,8 @@ class Person(Agent):
         self.timer = 0
         self.recovery_time = 5000
         self.quarantine_timer = 0
+        self.start_lecture = 0
+        self.end_lecture = 0 
         
 
     def infected(self):
@@ -55,6 +57,7 @@ class Person(Agent):
         self.get_colors()
         self.recover()
         self.cinema_behavior()
+        self.university()
         self.quarantine()
         self.store_agent_types()
 
@@ -111,7 +114,24 @@ class Person(Agent):
                             self.max_speed = 30.0
                 
 
-                            
+    def university(self):
+        if config['population']['school']:
+            self.end_lecture +=1
+            if self.end_lecture % 200 == 0:
+                v = np.random.rand(2)*30
+                self.v = np.array(v)
+                self.max_speed = 30.0
+                self.end_lecture = 0
+            for site in self.population.objects.sites:
+                    collide = pygame.sprite.collide_mask(self, site)
+                    if bool(collide):
+                        self.start_lecture +=1
+                        if self.start_lecture % 20 ==0:
+                            self.v = np.array([0,0])
+                            self.start_lecture = 0
+                        
+
+                                     
 
     def store_agent_types(self):
             self.population.datapoints.append(self.type)
