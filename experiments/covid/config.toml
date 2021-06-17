@@ -12,8 +12,9 @@ width  = 1000
 [population]
 obstacles = false
 cinema = false
+full_lockdown = true
 school = false
-quarantine = true #need outside to be true
+quarantine = false #need outside to be true
 outside = true #normal experiment
 lockdown = false #change to false to go back to normal mode
 lockdown_location = [200,300]

@@ -9,7 +9,7 @@ class Population(Swarm):
     """Class that represents the Population for the Covid experiment. TODO"""
 
     def __init__(self, screen_size) -> None:
-        super(Population, self).__init__(screen_size)
+        super(Population, self).__init__(screen_size,plot= {"S":[],"I":[],"R":[]})
         
         # To do
 
@@ -148,6 +148,13 @@ class Population(Swarm):
                 file=filename, pos=object_loc, scale=scale, obj_type="site")
 
 
+        #full lockdown
+        if config['population']['full_lockdown']:
+            object_loc=[500,500]
+            scale=[1000,1000]
+            filename = ("experiments/covid/images/fulllockdown.png")
+            self.objects.add_object(
+                file=filename, pos=object_loc, scale=scale, obj_type="obstacle")
 
 
         #non-lockdown program
