@@ -45,11 +45,14 @@ class Person(Agent):
         self.quarantine_timer = 0
         self.start_lecture = 0
         self.end_lecture = 0 
+        self.probability = 0.90
         
 
     def infected(self):
         if self.population.find_neighbors(self,config["person"]["radius_view"]) and self.type == "S":
-            self.type = "I"
+            sample = random.random()
+            if sample < self.probability:
+                self.type = "I"
          
 
     def update_actions(self) -> None:
