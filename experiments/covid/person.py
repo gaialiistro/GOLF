@@ -46,17 +46,28 @@ class Person(Agent):
         self.start_lecture = 0
         self.end_lecture = 0 
         self.probability = 0.90
+        self.infected_variable = False
+        self.incubation_time = 0
         
 
     def infected(self):
         if self.population.find_neighbors(self,config["person"]["radius_view"]) and self.type == "S":
             sample = random.random()
             if sample < self.probability:
+                self.infected_variable = True
+                
+    
+    def incubation(self):
+        if self.infected_variable == True:
+            self.incubation_time +=1
+            if self.incubation_time > 20:
                 self.type = "I"
-         
+                self.incubation_time = 0
+                self.infected_variable = False
 
     def update_actions(self) -> None:
         self.infected()
+        self.incubation()
         self.get_colors()
         self.recover()
         self.cinema_behavior()

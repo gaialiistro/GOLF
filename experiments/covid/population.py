@@ -115,12 +115,12 @@ class Population(Swarm):
         
           #school configuration
         if config['population']['school']:
-            object_loc=[500,600]
+            object_loc=[500,490]
             scale=[1000,1000]
             filename1 = ("experiments/covid/images/room.png")
             filename2 = ("experiments/covid/images/river.png")
             self.objects.add_object(
-                file=filename2, pos=object_loc, scale=scale, obj_type="obstacle")
+                file=filename2, pos=object_loc, scale=scale, obj_type=None)
             self.objects.add_object(
                 file=filename1, pos=object_loc, scale=scale, obj_type="site")
 
